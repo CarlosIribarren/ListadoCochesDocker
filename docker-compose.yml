@@ -20,6 +20,11 @@ services:
     build:
       context: .
       dockerfile: AppBack.dockerfile
+    environment:
+      - DB_URL=jdbc:postgresql://servicio-base-datos:5432/dbCoches
+      - DB_SCHEMA=coches_schema
+      - DB_USER=userCoches
+      - DB_PASSWORD=passCoches      
     expose:
         - 8081
     ports:
@@ -34,6 +39,8 @@ services:
     build:
       context: .
       dockerfile: AppFront.dockerfile
+    environment:
+      - API_COCHES_HOST=http://servicio-back:8081        
     expose:
       - 8080
     ports:
