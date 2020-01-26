@@ -6,8 +6,6 @@ services:
     build:
       context: .
       dockerfile: DB.dockerfile
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
     expose:
       - 5432
     ports:
@@ -45,8 +43,4 @@ services:
     links:
       - servicio-back
 
-
-
-volumes:
-  postgres-data:
 
