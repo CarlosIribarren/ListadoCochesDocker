@@ -1,0 +1,54 @@
+version: "3.3"
+services:
+
+  servicio-base-datos:
+    network_mode: bridge
+    build:
+      context: .
+      dockerfile: DB.dockerfile
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    expose:
+    - 5432
+    ports:
+    - 5432:5432
+    environment:
+    - POSTGRES_USER=userCoches
+    - POSTGRES_PASSWORD=passCoches
+    - POSTGRES_DB=dbCoches
+
+  servicio-back:
+    network_mode: bridge
+    build:
+      context: .
+      dockerfile: AppBack.dockerfile
+    expose:
+    - 8081
+    ports:
+    - 8081:8081      
+    restart: unless-stopped      
+    depends_on:
+      - "servicio-base-datos"
+    links:
+      - servicio-base-datos
+
+  servicio-front:
+    network_mode: bridge
+    build:
+      context: .
+      dockerfile: AppFront.dockerfile
+    expose:
+    - 8080
+    ports:
+    - 8080:8080      
+    restart: unless-stopped      
+    depends_on:
+      - "servicio-back"
+    links:
+      - servicio-back
+
+
+
+volumes:
+  postgres-data:
+
