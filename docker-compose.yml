@@ -3,9 +3,7 @@ services:
 
   servicio-base-datos:
     network_mode: bridge
-    build:
-      context: .
-      dockerfile: DB.dockerfile
+    image: carlosiribarren/listado-coches-bd:1.0.0-RELEASE
     expose:
       - 5432
     ports:
@@ -17,9 +15,7 @@ services:
 
   servicio-back:
     network_mode: bridge
-    build:
-      context: .
-      dockerfile: AppBack.dockerfile
+    image: carlosiribarren/listado-coches-api:1.0.1-RELEASE
     environment:
       - DB_URL=jdbc:postgresql://servicio-base-datos:5432/dbCoches
       - DB_SCHEMA=coches_schema
@@ -36,9 +32,7 @@ services:
 
   servicio-front:
     network_mode: bridge
-    build:
-      context: .
-      dockerfile: AppFront.dockerfile
+    image: carlosiribarren/listado-coches-web:1.0.1-RELEASE
     environment:
       - API_COCHES_HOST=http://servicio-back:8081        
     expose:
