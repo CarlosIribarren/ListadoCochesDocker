@@ -2,10 +2,7 @@ version: "3.3"
 services:
 
   servicio-base-datos:
-    network_mode: bridge
     image: carlosiribarren/listado-coches-bd:1.0.0-RELEASE
-    expose:
-      - 5432
     ports:
       - 5432:5432
     environment:
@@ -14,34 +11,20 @@ services:
       - POSTGRES_DB=dbCoches
 
   servicio-back:
-    network_mode: bridge
     image: carlosiribarren/listado-coches-api:1.0.1-RELEASE
     environment:
       - DB_URL=jdbc:postgresql://servicio-base-datos:5432/dbCoches
       - DB_SCHEMA=coches_schema
       - DB_USER=userCoches
       - DB_PASSWORD=passCoches      
-    expose:
-        - 8081
     ports:
     - 8081:8081          
-    depends_on:
-      - "servicio-base-datos"
-    links:
-      - servicio-base-datos
 
   servicio-front:
-    network_mode: bridge
     image: carlosiribarren/listado-coches-web:1.0.1-RELEASE
     environment:
       - API_COCHES_HOST=http://servicio-back:8081        
-    expose:
-      - 8080
     ports:
       - 8080:8080         
-    depends_on:
-      - "servicio-back"
-    links:
-      - servicio-back
 
 
