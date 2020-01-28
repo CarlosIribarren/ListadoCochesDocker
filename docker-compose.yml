@@ -2,29 +2,33 @@ version: "3.3"
 services:
 
   servicio-base-datos:
-    image: carlosiribarren/listado-coches-bd:1.0.0-RELEASE
+    image: postgres:12.1
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=userCoches
-      - POSTGRES_PASSWORD=passCoches
-      - POSTGRES_DB=dbCoches
+      - POSTGRES_USER=user_coches
+      - POSTGRES_PASSWORD=pass_coches
+      - POSTGRES_DB=db_coches
 
   servicio-back:
-    image: carlosiribarren/listado-coches-api:1.0.1-RELEASE
+    image: carlosiribarren/listado-coches-api:1.0.2-RELEASE
     environment:
-      - DB_URL=jdbc:postgresql://servicio-base-datos:5432/dbCoches
+      - DB_URL=jdbc:postgresql://servicio-base-datos:5432/db_coches
       - DB_SCHEMA=coches_schema
-      - DB_USER=userCoches
-      - DB_PASSWORD=passCoches      
+      - DB_USER=user_coches
+      - DB_PASSWORD=pass_coches
     ports:
     - 8081:8081          
 
   servicio-front:
-    image: carlosiribarren/listado-coches-web:1.0.1-RELEASE
+    image: carlosiribarren/listado-coches-web:1.0.2-RELEASE
     environment:
       - API_COCHES_HOST=http://servicio-back:8081        
     ports:
       - 8080:8080         
 
 
+# NOTAS:
+# Cuando se ejecuta por primera vez la imagen de postgres:12.1, crea la Base de datos con el nombre que se pasa por parametro (POSTGRES_DB).
+# Tambien se crea el usuario con el password.
+# Es recomendable que el usuario y el password se escriban minusculas, ya que es key sensitive.
